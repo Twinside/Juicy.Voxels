@@ -4,6 +4,7 @@ module Codec.Volume.VectorOutput
     ( VectorOut
     , newVectorOut
     , prevValueAt
+    , unsafePrevValueAt
     , finalizeOutput
     {-, written-}
     , push
@@ -40,6 +41,7 @@ finalizeOutput o = primToPrim $ do
 
 prevValueAt :: (Storable a, PrimMonad m, Applicative m)
             => VectorOut (PrimState m) a -> Int -> a -> m a
+{-# INLINE prevValueAt #-}
 prevValueAt o delta def = primToPrim $ do
   ix <- readSTRef $ _outIndex o
   if delta > ix then
@@ -48,8 +50,17 @@ prevValueAt o delta def = primToPrim $ do
     vec <- readSTRef $ _outVector o
     vec `VSM.read` (ix - delta)
 
+unsafePrevValueAt :: (Storable a, PrimMonad m, Applicative m)
+                  => VectorOut (PrimState m) a -> Int -> m a
+{-# INLINE unsafePrevValueAt #-}
+unsafePrevValueAt o delta = primToPrim $ do
+  ix <- readSTRef $ _outIndex o
+  vec <- readSTRef $ _outVector o
+  vec `VSM.unsafeRead` (ix - delta)
+
 -- | Add an element at the end of the vector, return the writing index.
 push :: (Storable a, PrimMonad m) => VectorOut (PrimState m) a -> a -> m Int
+{-# INLINE push #-}
 push o e = primToPrim $ do
     ix <- readSTRef $ _outIndex o
     vec <- readSTRef $ _outVector o
