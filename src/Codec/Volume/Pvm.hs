@@ -142,7 +142,7 @@ decodeDDS str
   | otherwise = str 
   where
     go sig blockSize = runST $ runBoolReader $ do
-      setDecodedString $ B.drop (B.length sig) str
+      setDecodedStringMSB $ B.drop (B.length sig) str
       toByteString <$> decodeDDSPayload blockSize
 
 

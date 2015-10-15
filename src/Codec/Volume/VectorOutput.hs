@@ -1,5 +1,6 @@
 -- | This module implements a growing buffer where
 -- each element can be appended relatively efficiently.
+{-# LANGUAGE BangPatterns #-}
 module Codec.Volume.VectorOutput
     ( VectorOut
     , newVectorOut
@@ -25,7 +26,7 @@ data VectorOut s a = VectorOut
 -- | Create a new vector output, in IO or ST monad.
 newVectorOut :: (Storable a, PrimMonad m) => m (VectorOut (PrimState m) a)
 newVectorOut =
-  primToPrim $ VectorOut <$> newSTRef 0 <*> (VSM.new 64 >>= newSTRef)
+  primToPrim $ VectorOut <$> newSTRef 0 <*> (VSM.new 256 >>= newSTRef)
 
 -- | When the vertice gathering is finished, get back an imutable
 -- vector of the value.
@@ -62,18 +63,18 @@ unsafePrevValueAt o delta = primToPrim $ do
 push :: (Storable a, PrimMonad m) => VectorOut (PrimState m) a -> a -> m Int
 {-# INLINE push #-}
 push o e = primToPrim $ do
-    ix <- readSTRef $ _outIndex o
-    vec <- readSTRef $ _outVector o
+    !ix <- readSTRef $ _outIndex o
+    !vec <- readSTRef $ _outVector o
     if ix >= VSM.length vec then do
-      let vSize = VSM.length vec * 2
-      newVec <- VSM.grow vec vSize 
+      let !vSize = VSM.length vec * 2
+      !newVec <- VSM.grow vec vSize 
       writeSTRef (_outVector o) newVec
       go ix newVec
     else
       go ix vec
   where
-    go ix vec = do
-      writeSTRef (_outIndex o) $ ix + 1
+    go !ix !vec = do
+      writeSTRef (_outIndex o) $! ix + 1
       VSM.unsafeWrite vec ix e
       return ix
 

@@ -1,17 +1,13 @@
 {-# LANGUAGE TupleSections #-}
-import Data.Foldable( forM_ )
 import Data.Word( Word8 )
 import Codec.Volume
-import Codec.Volume.Pvm
-import Codec.Volume.VectorByteConversion
 import qualified Data.Vector.Storable as VS
 import qualified Data.ByteString.Char8 as B
 import Codec.Picture
 import Codec.Picture.Gif
-import Text.Printf
 
 toImg :: Int -> Int -> Int -> VS.Vector Word8 -> Image Pixel8
-toImg w h slice = Image w h . VS.take imgSize . VS.drop (imgSize * slice)
+toImg w h volumeSlice = Image w h . VS.take imgSize . VS.drop (imgSize * volumeSlice)
   where
     imgSize = w * h
 
