@@ -26,6 +26,7 @@ library
                  , Codec.Volume.VectorByteConversion
   other-modules: Codec.Volume.Types
                , Codec.Volume.BitIO
+               , Codec.Volume.Dds
                , Codec.Volume.VectorOutput
                , Data.Binary.Ascii
   -- other-extensions:    
