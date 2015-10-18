@@ -3,10 +3,11 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TupleSections #-}
 {-# LANGUAGE CPP #-}
-module Codec.Volume.Pvm( decodeDDS, decodePVM ) where
+-- | Module implementaing the PVM file reading.
+module Codec.Volume.Pvm( readPVM, decodePVM ) where
 
 #if !MIN_VERSION_base(4,8,0)
-import Control.Applicative( (*>) )
+import Control.Applicative( (*>), (<$>) )
 #endif
 
 import Data.Bifunctor( bimap )
@@ -25,12 +26,13 @@ import Codec.Volume.Types
 import Codec.Volume.Dds
 import Data.Binary.Ascii
 
-import Debug.Trace
-
-
+-- | Decode a PVM (potentially with dds compression) in memory.
 decodePVM :: B.ByteString -> Either String DynamicVolume
-decodePVM = decodeDecompressed . (\s -> trace (show $ B.take 200 s) s) . decodeDDS 
+decodePVM = decodeDecompressed . decodeDDS 
 
+-- | Read a pvm file potentially with DDS compression.
+readPVM :: FilePath -> IO (Either String DynamicVolume)
+readPVM fname = decodePVM <$> B.readFile fname
 
 decodeDecompressed :: B.ByteString -> Either String DynamicVolume
 decodeDecompressed str

@@ -3,20 +3,11 @@ import Data.Word( Word8 )
 import Codec.Volume
 import qualified Data.Vector.Storable as VS
 import qualified Data.ByteString.Char8 as B
-import Codec.Picture
-import Codec.Picture.Gif
-
-toImg :: Int -> Int -> Int -> VS.Vector Word8 -> Image Pixel8
-toImg w h volumeSlice = Image w h . VS.take imgSize . VS.drop (imgSize * volumeSlice)
-  where
-    imgSize = w * h
 
 toGif :: FilePath -> Volume Word8 -> IO ()
-toGif fname vol = case rez of
+toGif fname vol = case writeGifVolume fname vol of
     Left err -> putStrLn $ "Error : " ++ err
     Right v -> v
-  where
-    rez = writeGifImages fname LoopingForever $ (greyPalette, 7,) <$> slices vol
 
 main :: IO ()
 main = do

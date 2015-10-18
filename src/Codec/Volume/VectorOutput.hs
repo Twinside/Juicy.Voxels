@@ -26,7 +26,7 @@ data VectorOut s a = VectorOut
 -- | Create a new vector output, in IO or ST monad.
 newVectorOut :: (Storable a, PrimMonad m) => m (VectorOut (PrimState m) a)
 newVectorOut =
-  primToPrim $ VectorOut <$> newSTRef 0 <*> (VSM.new 256 >>= newSTRef)
+  primToPrim $ VectorOut <$> newSTRef 0 <*> (VSM.new (64 * 64 * 64) >>= newSTRef)
 
 -- | When the vertice gathering is finished, get back an imutable
 -- vector of the value.
@@ -59,6 +59,7 @@ unsafePrevValueAt o delta = primToPrim $ do
 
 -- | Add an element at the end of the vector, return the writing index.
 push :: (Storable a, PrimMonad m) => VectorOut (PrimState m) a -> a -> m Int
+{-# INLINE push #-}
 push o e = primToPrim $ do
     !ix <- readSTRef $ _outIndex o
     !vec <- readSTRef $ _outVector o

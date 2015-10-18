@@ -3,13 +3,13 @@
 
 name:                JuicyVoxels
 version:             0.1.0.0
-synopsis:            Voxel file reader
--- description:         
+synopsis:            Volume file reader (PVM/Gif/Picture list)
+description:         Load various volume file in memory for further processing.
 homepage:            http://github.com/Twinside/JuicyVoxels
 license:             BSD3
 license-file:        LICENSE
 author:              Vincent Berthoux
-maintainer:          twinside@gmail.com
+maintainer:          vincent.berthoux@gmail.com
 -- copyright:           
 category:            Graphics
 build-type:          Simple
@@ -23,11 +23,12 @@ library
   Ghc-prof-options: -rtsopts -Wall -prof -auto-all -caf-all
   exposed-modules: Codec.Volume
                  , Codec.Volume.Pvm
-                 , Codec.Volume.VectorByteConversion
-  other-modules: Codec.Volume.Types
-               , Codec.Volume.BitIO
+                 , Codec.Volume.Gif
+                 , Codec.Volume.Types
+  other-modules: Codec.Volume.BitIO
                , Codec.Volume.Dds
                , Codec.Volume.VectorOutput
+               , Codec.Volume.VectorByteConversion
                , Data.Binary.Ascii
   -- other-extensions:    
   build-depends: base >=4.8 && <4.9

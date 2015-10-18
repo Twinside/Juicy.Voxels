@@ -24,6 +24,7 @@ data VoxelSize a = VoxelSize
   }
   deriving (Eq, Show, Ord)
 
+-- | Dimension of a volume, expressed in number of samples.
 data VolumeSize = VolumeSize
   { _volumeWidth  :: !Int
   , _volumeHeight :: !Int
@@ -35,6 +36,7 @@ samplesInVolume :: VolumeSize -> Int
 samplesInVolume vs =
   _volumeWidth vs * _volumeHeight vs * _volumeDepth vs
 
+-- | Type representing a volume.
 data Volume a = Volume
   { _volumeSize  :: !VolumeSize
   , _volumeVoxel :: !(VoxelSize Float)
@@ -42,6 +44,7 @@ data Volume a = Volume
   }
   deriving (Eq, Ord)
 
+-- | Map over all the values stored in a voxel.
 volumeMap :: (VS.Storable a, VS.Storable b)
           => (a -> b) -> Volume a -> Volume b
 volumeMap f vol = vol { _volumeData = VS.map f $ _volumeData vol }
@@ -60,6 +63,8 @@ slices :: (VS.Storable a, a ~ PixelBaseComponent a)
        => Volume a -> [Image a]
 slices vol = slice vol <$> [0 .. _volumeDepth (_volumeSize vol) - 1]
 
+-- | Volume files can store different kind of data precision,
+-- this allows to represent them dynamically.
 data DynamicVolume
   = Volume8  (Volume Word8)
   | Volume16 (Volume Word16)

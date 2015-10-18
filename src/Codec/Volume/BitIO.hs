@@ -102,8 +102,8 @@ byteAlignJpg = do
   BoolState idx _ chain <- S.get
   when (idx /= 7) (setDecodedStringJpg chain)
 
-{-# INLINE getNextBitJpg #-}
 getNextBitJpg :: BoolReader s Bool
+{-# INLINE getNextBitJpg #-}
 getNextBitJpg = do
     BoolState idx v chain <- S.get
     let val = (v .&. (1 `unsafeShiftL` idx)) /= 0
@@ -112,30 +112,25 @@ getNextBitJpg = do
       else S.put $ BoolState (idx - 1) v chain
     return val
 
-{-# INLINE getNextBitMSB #-}
 getNextBitMSB :: BoolReader s Bool
+{-# INLINE getNextBitMSB #-}
 getNextBitMSB = do
     BoolState idx v chain <- S.get
-    if idx == 7
+    if idx == 0
       then setDecodedString chain
       else S.put $! BoolState (idx + 1) v chain
     return $! v `testBit` idx
 
-{-# INLINE getNextBitsMSBFirst #-}
 getNextBitsMSBFirst :: Int -> BoolReader s Word32
+{-# INLINE getNextBitsMSBFirst #-}
 getNextBitsMSBFirst requested = do
   let aux :: Word32 -> Int -> BoolReader s Word32
       aux !acc !0 = return acc
       aux !acc !n = do
         BoolState idx v chain <- S.get
         let !leftBits = fromIntegral idx
-        --
-        -- | 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0
-        -- idx: 3            *
         if n >= leftBits then do
           setDecodedStringMSB chain
-        -- | * | * | * | 7 | 6 | 5 | 4 | 3
-        -- theseBits
           let !theseBits = fromIntegral v `unsafeShiftL` (n - leftBits)
           aux (acc .|. theseBits) (n - leftBits)
         else do

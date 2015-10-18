@@ -23,9 +23,6 @@ import Codec.Volume.VectorByteConversion
 import Codec.Volume.BitIO
 import Codec.Volume.VectorOutput
 
-import Debug.Trace
-import Text.Printf
-
 ddsV1Sig, ddsV2Sig :: B.ByteString
 ddsV1Sig = "DDS v3d\n"
 ddsV2Sig = "DDS v3e\n"
@@ -96,9 +93,7 @@ decodeDDSPayload :: Maybe Int -> BoolReader s (VS.Vector Word8)
 decodeDDSPayload blockSize = do
   skip <- (+ 1) . fromIntegral <$> readBits 2
   stripMax <- (+ 1) . fromIntegral <$> readBits 16
-  vecOut <-
-        trace (printf "skip:%d stripMax: %d" skip stripMax) $ 
-        lift newVectorOut
+  vecOut <- lift newVectorOut
   let stripRead _acc' _written 0 = pure ()
       stripRead acc' writtenTop stripSize = do
         bitCount <- readDDSBitSize
