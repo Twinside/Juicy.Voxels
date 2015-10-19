@@ -18,5 +18,5 @@ module Codec.Volume
 
 import Codec.Volume.Types
 import Codec.Volume.Pvm
-import Codec.Volume.Gif
+import Codec.Volume.Pictures
 

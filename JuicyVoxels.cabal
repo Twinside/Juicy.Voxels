@@ -23,7 +23,7 @@ library
   Ghc-prof-options: -rtsopts -Wall -prof -auto-all -caf-all
   exposed-modules: Codec.Volume
                  , Codec.Volume.Pvm
-                 , Codec.Volume.Gif
+                 , Codec.Volume.Pictures
                  , Codec.Volume.Types
   other-modules: Codec.Volume.BitIO
                , Codec.Volume.Dds
