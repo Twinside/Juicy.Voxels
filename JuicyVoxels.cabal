@@ -4,7 +4,10 @@
 name:                JuicyVoxels
 version:             0.1.0.0
 synopsis:            Volume file reader (PVM/Gif/Picture list)
-description:         Load various volume file in memory for further processing.
+description:
+  <<data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEABAMAAACuXLVVAAAAFVBMVEX///+3t7e3t7e2trYAAABwe6+3t7d9QqlPAAAABHRSTlMAGVJmjDgF3gAAAXhJREFUeF7t3cFpxEAMBdC0kBa2hbSQFtLC9l9CRsCAQbAKFsHj2fcvQsb2f6c52h+diIj8HLIjAAAAoC7+PmRCdgYAAADk4sfIcyRmgmwEAAAAyMUTdARMZIIsCAAAAOgXvwIUkIsBAAAA/eIaUEOuBwAAAPSLa0ANWQ8AAABQFJ8A1JA1AQAAALH850EUy+oAAACArG4A0jvuAwAAACggBSDj7wgAAACoIRmQsTsBAAAAMuQISMUbAwAAADKkgG8MAAAAmAdQzPcDAAAAfI58jQQgZuy7AgAAAHLxYyRKnyMBiBl7XA/IjgAAAIBcPEsDMDEJsgEAAAAgFaeSAFT33BMAAADw15eeeGZhAAAAwJlD5czhtTYAAAAglEXxC0ANiX1tAAAAwETk4hpQQWb5SgAAAID6AwgtQP0BhOsBAAAAbUgAGsWXAwAAAPqQADSKLwcAAAD0IbE3ii8HAAAA9CExi+K1AQAAAP7oBAAA4A+PAAAAIiK/0wCxl0o0VKIAAAAASUVORK5CYII=>>
+  .
+  Load various volume file in memory for further processing.
 homepage:            http://github.com/Twinside/JuicyVoxels
 license:             BSD3
 license-file:        LICENSE
