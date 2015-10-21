@@ -83,7 +83,10 @@ get16 _ = mempty
 imageSizeIdenticals :: Image a -> Image a -> Bool
 imageSizeIdenticals a b =
   imageWidth a == imageWidth b && imageHeight a == imageHeight b
-    
+
+-- | Convert a list of images to a volume.
+--
+-- All images must be of the same size.
 volumeOfImages :: (Storable a, PixelBaseComponent a ~ a)
                => [Image a] -> Either String (Volume a)
 volumeOfImages [] = Left "No images provided"
@@ -95,11 +98,19 @@ volumeOfImages lst@(i:rest)
      , _volumeData  = VSM.concat $ fmap imageData lst
      }
 
+-- | Load a list of images to a volume. The depth will be the number
+-- of images.
+--
+-- All images must be of the same dimension and have the same
+-- bit depth.
 volumeFromImageFiles :: [FilePath] -> IO (Either String DynamicVolume)
 volumeFromImageFiles pathes = do
   mayImages <- sequence <$> mapM readImage pathes
   return $ mayImages >>= volumeFromDynamicImages
 
+-- | Convert a list of loaded dynamic images to a volume.
+-- All images must be of the same dimension and have the same
+-- bit depth.
 volumeFromDynamicImages :: [DynamicImage] -> Either String DynamicVolume
 volumeFromDynamicImages imgs =
   case (foldMap get8 images8, foldMap get16 images16, rest) of
@@ -124,6 +135,7 @@ encodeGifVolume vol =
 writeGifVolume :: FilePath -> Volume Word8 -> Either String (IO ())
 writeGifVolume fname volume = LB.writeFile fname <$> encodeGifVolume volume
 
+-- | Decode a volume from an in-memory gif file.
 decodeGifVolume :: B.ByteString -> Either String DynamicVolume
 decodeGifVolume str = decodeGifImages str >>= volumeFromDynamicImages
 

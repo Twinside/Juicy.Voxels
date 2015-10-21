@@ -22,11 +22,11 @@ library
   ghc-options: -Wall -O2
   Ghc-prof-options: -rtsopts -Wall -prof -auto-all -caf-all
   exposed-modules: Codec.Volume
-                 , Codec.Volume.Pvm
-                 , Codec.Volume.Pictures
                  , Codec.Volume.Types
   other-modules: Codec.Volume.BitIO
                , Codec.Volume.Dds
+               , Codec.Volume.Pvm
+               , Codec.Volume.Pictures
                , Codec.Volume.VectorOutput
                , Codec.Volume.VectorByteConversion
                , Data.Binary.Ascii

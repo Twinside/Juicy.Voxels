@@ -1,3 +1,7 @@
+-- | Loader for PVM volume files or volume stored in GIFs or image
+-- list.
+--
+-- Most important functions are `readPVM` and `volumeFromImageFiles`.
 module Codec.Volume
   ( -- * Types
     Volume( .. )
@@ -6,9 +10,16 @@ module Codec.Volume
     -- ** PVM
   , readPVM
   , decodePVM
+
     -- ** GIF
+  , decodeGifVolume
   , encodeGifVolume
   , writeGifVolume
+
+    -- ** Images
+  , volumeOfImages
+  , volumeFromDynamicImages
+  , volumeFromImageFiles 
 
     -- * Helper functions
   , slice
